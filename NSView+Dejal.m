@@ -34,17 +34,28 @@
 @implementation NSView (DejalSubviews)
 
 /**
- Adds the specified view as a subview of the reciever, and sets its auto-layout constraints to keep it the full size of the receiver.
+ Adds the specified view as a subview of the reciever, and sets its Auto Layout constraints to keep it the full size of the receiver.
  
  @author DJS 2012-06.
+ @version DJS 2015-01: Split the Auto Layout part out to a separate method.
 */
 
 - (void)dejal_addFullyConstrainedSubview:(NSView *)subview;
 {
+    [self addSubview:subview];
+    [self dejal_addFullSizeConstraintsForSubview:subview];
+}
+
+/**
+ Adjusts the Auto Layout constraints of the specified subview of the reciever to keep it the full size of the receiver.
+ 
+ @author DJS 2015-01.
+*/
+
+- (void)dejal_addFullSizeConstraintsForSubview:(NSView *)subview;
+{
     // See also the IB checkbox for the root level of a view controller's views "Translates Mask Into Constraints":
     [subview setTranslatesAutoresizingMaskIntoConstraints:NO];
-    
-    [self addSubview:subview];
     
     NSDictionary *views = NSDictionaryOfVariableBindings(subview);
     

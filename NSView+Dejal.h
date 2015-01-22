@@ -31,6 +31,7 @@
 @interface NSView (DejalSubviews)
 
 - (void)dejal_addFullyConstrainedSubview:(NSView *)subview;
+- (void)dejal_addFullSizeConstraintsForSubview:(NSView *)subview;
 
 @end
 

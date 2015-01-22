@@ -522,6 +522,7 @@
  If the data source for the receiver is a dictionary, displayed via "Key" and "Value" columns, this method will add a new key to that dictionary, usually called from the "+" button's action method.  Digits are appended to the key to make it unique, if necessary.  Note that this could and should be done instead with bindings.  Remove this method once existing uses have been upgraded.
  
  @author DJS 2006-10.
+ @version DJS 2015-01: Changed to avoid an analyzer warning.
 */
 
 - (void)dejal_addKey:(NSString *)key withValue:(NSString *)value toDictionary:(NSMutableDictionary *)dict;
@@ -535,7 +536,10 @@
         while ((composedKey = [NSString stringWithFormat:@"%@%ld", key, extra]) && dict[composedKey])
             extra++;
     
-    dict[composedKey] = value;
+    if (composedKey.length)
+    {
+        dict[composedKey] = value;
+    }
     
     [self reloadData];
     
