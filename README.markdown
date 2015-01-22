@@ -50,6 +50,7 @@ Features
 - **NSTextView+Dejal**: Properties for string, attributed string and RTF values, methods for length, range, appending, and selection.
 - **NSToolbar+Dejal**: Methods for the toolbar height and finding an item by identifier.
 - **NSView+Dejal**: Add a view as a fully-constrained subview, adjust autoresizing, scale, and set the alpha opacity.
+- **NSViewController+Dejal**: Transition a view controller to another one as a fully-constrained subview.
 - **NSWindow+Dejal**: Methods to force editing to end, fade in a window, and adjust the sizing of the window based on a view.
 
 The methods use a `dejal_` prefix to ensure uniqueness (important with categories).
