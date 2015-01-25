@@ -43,3 +43,16 @@ typedef enum
 
 @end
 
+
+@interface NSButton (DejalRadios)
+
+@property (nonatomic, setter=dejal_setRadiosEnabled:) BOOL dejal_radiosEnabled;
+
+- (void)dejal_selectRadioWithTag:(NSInteger)tag;
+- (NSInteger)dejal_selectedRadioTag;
+
+- (NSButton *)dejal_radioPassingTest:(BOOL (^)(NSButton *radio, BOOL *stop))predicate;
+- (void)dejal_enumerateRadiosUsingBlock:(void (^)(NSButton *radio, BOOL *stop))block;
+
+@end
+

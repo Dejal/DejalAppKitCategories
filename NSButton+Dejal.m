@@ -102,3 +102,132 @@
 
 @end
 
+
+// ----------------------------------------------------------------------------------------
+#pragma mark -
+// ----------------------------------------------------------------------------------------
+
+
+@implementation NSButton (DejalRadios)
+
+/**
+ Assuming the receiver is a radio button, finds other radio buttons in the group (i.e. in the same superview and with the same action) and selects the one with the specified tag.  Invoke this on any of the radios in the group.  A replacement for -[NSMatrix selectCellWithTag:].
+ 
+ @param tag The tag value to select.
+ 
+ @author DJS 2015-01.
+ */
+
+- (void)dejal_selectRadioWithTag:(NSInteger)tag;
+{
+    [self dejal_enumerateRadiosUsingBlock:^(NSButton *radio, BOOL *stop)
+     {
+         radio.state = radio.tag == tag;
+     }];
+}
+
+/**
+ Assuming the receiver is a radio button, finds other radio buttons in the group (i.e. in the same superview and with the same action) and returns the tag value of the selected radio.  Invoke this on any of the radios in the group.  A replacement for -[NSMatrix selectedTag].
+ 
+ @returns A tag value integer.
+ 
+ @author DJS 2015-01.
+ */
+
+- (NSInteger)dejal_selectedRadioTag;
+{
+    NSButton *foundRadio = [self dejal_radioPassingTest:^BOOL(NSButton *radio, BOOL *stop)
+     {
+         return radio.state;
+     }];
+    
+    return foundRadio.tag;
+}
+
+/**
+ Returns YES if the radio group is enabled, or NO if not.  Simply returns the state of the receiver; the others are assumed to be the same.  (If you want to know if they are all enabled or disabled, probably best to use -dejal_enumerateRadiosUsingBlock: to scan the group, and handle a mixed case as needed.)
+ 
+ @author DJS 2015-01.
+ */
+
+- (BOOL)dejal_radiosEnabled;
+{
+    return self.enabled;
+}
+
+/**
+ Sets all of the radios in the group to be enabled or disabled.  A replacement for -[NSMatrix setEnabled:].
+ 
+ @author DJS 2015-01.
+ */
+
+- (void)dejal_setRadiosEnabled:(BOOL)enabled;
+{
+    [self dejal_enumerateRadiosUsingBlock:^(NSButton *radio, BOOL *stop)
+     {
+         radio.enabled = enabled;
+     }];
+}
+
+/**
+ Assuming the receiver is a radio button, finds other radio buttons in the group (i.e. in the same superview and with the same action) and performs the block for each of them, passing the radio to the block.  Returns the one that returns YES, or nil if the block requests to stop before completion, or it completes without the block returning YES.  Invoke this on any of the radios in the group.
+ 
+ @param block A block that takes a radio button and stop boolean reference as parameters and returns a boolean.
+ @returns The found radio button, or nil if none is found.
+ 
+ @author DJS 2015-01.
+ */
+
+- (NSButton *)dejal_radioPassingTest:(BOOL (^)(NSButton *radio, BOOL *stop))predicate;
+{
+    for (NSButton *radio in self.superview.subviews)
+    {
+        // There's no reliable way to determine if a button is actually a radio button, but it's reasonable to assume that no non-radio will have the same action (and having the same action is what makes it a member of the group):
+        if ([radio isKindOfClass:[NSButton class]] && radio.action == self.action && predicate)
+        {
+            BOOL stop = NO;
+            
+            if (predicate(radio, &stop))
+            {
+                return radio;
+            }
+            
+            if (stop)
+            {
+                return nil;
+            }
+        }
+    }
+    
+    return nil;
+}
+
+/**
+ Assuming the receiver is a radio button, finds other radio buttons in the group (i.e. in the same superview and with the same action) and performs the block for each of them, passing the radio to the block.  Invoke this on any of the radios in the group.
+ 
+ @param block A block that takes a radio button and stop boolean reference as parameters and returns void.
+ 
+ @author DJS 2015-01.
+ */
+
+- (void)dejal_enumerateRadiosUsingBlock:(void (^)(NSButton *radio, BOOL *stop))block;
+{
+    for (NSButton *radio in self.superview.subviews)
+    {
+        // There's no reliable way to determine if a button is actually a radio button, but it's reasonable to assume that no non-radio will have the same action (and having the same action is what makes it a member of the group):
+        if ([radio isKindOfClass:[NSButton class]] && radio.action == self.action && block)
+        {
+            BOOL stop = NO;
+            
+            block(radio, &stop);
+            
+            if (stop)
+            {
+                return;
+            }
+        }
+    }
+}
+
+@end
+

@@ -38,7 +38,7 @@ Environment & Requirements
 Features
 --------
 
-- **NSButton+Dejal**: A text color property and a method to display a menu.
+- **NSButton+Dejal**: A text color property and a method to display a menu, plus methods to manage radio buttons without the informally-deprecated NSMatrix.
 - **NSImage+Dejal**: Methods to draw flipped images, apply a badge or tint, or get a PNG representation.
 - **NSMenu+Dejal**: Methods to add and remove items.
 - **NSOutlineView+Dejal**: Methods for selected items and displaying a menu.
