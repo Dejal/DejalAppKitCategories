@@ -241,3 +241,30 @@
 
 @end
 
+
+@implementation NSMenuItem (Dejal)
+
+/**
+ Returns a new menu item instance with the given title and other settings.  Perhaps kinda silly, but having to specify an empty (not nil) key equivalent is annoying, but blocks are fun.
+ 
+ @param title The title for the menu item.
+ @param block An optional block to set additional properties on the new item.  Pass nil to only set the title.
+ @returns A new menu item instance.
+ 
+ @author DJS 2015-02.
+ */
+
++ (instancetype)dejal_menuItemWithTitle:(NSString *)title settings:(void (^)(NSMenuItem *item))block;
+{
+    NSMenuItem *menuItem = [[self alloc] initWithTitle:title action:nil keyEquivalent:@""];
+    
+    if (block)
+    {
+        block(menuItem);
+    }
+    
+    return menuItem;
+}
+
+@end
+

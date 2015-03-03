@@ -56,3 +56,10 @@
 
 @end
 
+
+@interface NSMenuItem (Dejal)
+
++ (instancetype)dejal_menuItemWithTitle:(NSString *)title settings:(void (^)(NSMenuItem *item))block;
+
+@end
+
