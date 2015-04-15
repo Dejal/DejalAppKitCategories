@@ -28,17 +28,11 @@
 //
 
 
-typedef enum
-{
-    DejalButtonMenuOffsetToolbar = -2,
-    DejalButtonMenuOffsetResessed = 4
-} DejalButtonMenuOffset;
-
-
 @interface NSButton (Dejal)
 
 @property (nonatomic, strong, setter=dejal_setTextColor:) NSColor *dejal_textColor;
 
+- (void)dejal_displayMenu:(NSMenu *)menu;
 - (void)dejal_displayMenu:(NSMenu *)menu withOffset:(CGFloat)verticalOffset;
 
 @end

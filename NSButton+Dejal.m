@@ -86,9 +86,34 @@
  
  @param menu The menu to display.
  
- @author DJS 2014-10.
+ @author DJS 2015-04.
  */
 
+- (void)dejal_displayMenu:(NSMenu *)menu;
+{
+    [self dejal_displayMenu:menu withOffset:4];
+}
+
+/**
+ Displays a menu below the receiver.
+ 
+ @param menu The menu to display.
+ @param verticalOffset the offset to adjust vertically.
+ 
+ @author DJS 2014-10.
+ @version DJS 2015-04: Changed to use -popUpMenuPositioningItem::: instead of +popUpContextMenu:menu::.
+ */
+
+- (void)dejal_displayMenu:(NSMenu *)menu withOffset:(CGFloat)verticalOffset;
+{
+    NSPoint location = self.frame.origin;
+    
+    location.y -= verticalOffset;
+    
+    [menu popUpMenuPositioningItem:nil atLocation:location inView:self.superview];
+}
+
+/*
 - (void)dejal_displayMenu:(NSMenu *)menu withOffset:(CGFloat)verticalOffset;
 {
     NSRect frame = self.frame;
@@ -99,6 +124,7 @@
     
     [NSMenu popUpContextMenu:menu withEvent:event forView:self];
 }
+*/
 
 @end
 
