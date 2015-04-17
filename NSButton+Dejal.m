@@ -106,8 +106,25 @@
 
 - (void)dejal_displayMenu:(NSMenu *)menu withOffset:(CGFloat)verticalOffset;
 {
+    [self dejal_displayMenu:menu withHorizontalOffset:0.0 verticalOffset:verticalOffset];
+}
+
+/**
+ Displays a menu below the receiver.
+ 
+ @param menu The menu to display.
+ @param horizontalOffset the offset to adjust horizontally.
+ @param verticalOffset the offset to adjust vertically.
+ 
+ @author DJS 2014-10.
+ @version DJS 2015-04: Changed to use -popUpMenuPositioningItem::: instead of +popUpContextMenu:menu::, and add a horizontal offset.
+ */
+
+- (void)dejal_displayMenu:(NSMenu *)menu withHorizontalOffset:(CGFloat)horizontalOffset verticalOffset:(CGFloat)verticalOffset;
+{
     NSPoint location = self.frame.origin;
     
+    location.x += horizontalOffset;
     location.y -= verticalOffset;
     
     [menu popUpMenuPositioningItem:nil atLocation:location inView:self.superview];

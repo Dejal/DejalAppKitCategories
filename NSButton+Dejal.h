@@ -34,6 +34,7 @@
 
 - (void)dejal_displayMenu:(NSMenu *)menu;
 - (void)dejal_displayMenu:(NSMenu *)menu withOffset:(CGFloat)verticalOffset;
+- (void)dejal_displayMenu:(NSMenu *)menu withHorizontalOffset:(CGFloat)horizontalOffset verticalOffset:(CGFloat)verticalOffset;
 
 @end
 
