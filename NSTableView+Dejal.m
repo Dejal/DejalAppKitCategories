@@ -579,24 +579,49 @@
  @author DJS 2014-12.
  */
 
-- (void)dejal_reselectEditWithKey:(NSString *)key forDictionary:(NSMutableDictionary *)dict;
+- (void)dejal_reselectEditWithKey:(NSString *)key forDictionary:(NSDictionary *)dict;
 {
-    [self reloadData];
+    [self dejal_reselectEditWithKey:key forDictionary:dict column:-1];
+}
+
+/**
+ Adjusts the current edit after editing the key.
+ 
+ @param key A dictionary key.
+ @param dict A dictionary that contains that key.
+ @param column The column with the field for that key.
+ 
+ @author DJS 2014-12.
+ @version DJS 2015-06: Changed to wait a moment, to avoid conflicting with a tab event, and add a column parameter.
+ */
+
+- (void)dejal_reselectEditWithKey:(NSString *)key forDictionary:(NSDictionary *)dict column:(NSInteger)column;
+{
+    dispatch_time_t doTime = dispatch_time(DISPATCH_TIME_NOW, 0.1 * NSEC_PER_SEC);
     
-    NSInteger row = [[dict dejal_sortedKeys] indexOfObject:key];
-    NSInteger column = self.editedColumn + 1;
-    
-    if (column < 0)
-    {
-        column = [self dejal_indexOfFirstEditableTableColumn];
-    }
-    
-    [self dejal_selectRowIndex:row byExtendingSelection:NO];
-    
-    if (column >= 0)
-    {
-        [self editColumn:column row:row withEvent:nil select:YES];
-    }
+    dispatch_after(doTime, dispatch_get_main_queue(), ^
+                   {
+                       [self reloadData];
+                       
+                       NSInteger row = [[dict dejal_sortedKeys] indexOfObject:key];
+                       NSInteger editColumn = self.editedColumn + 1;
+                       
+                       if (column >= 0)
+                       {
+                           editColumn = column + 1;
+                       }
+                       else if (editColumn < 0)
+                       {
+                           editColumn = [self dejal_indexOfFirstEditableTableColumn];
+                       }
+                       
+                       [self dejal_selectRowIndex:row byExtendingSelection:NO];
+                       
+                       if (editColumn >= 0)
+                       {
+                           [self editColumn:editColumn row:row withEvent:nil select:YES];
+                       }
+                   });
 }
 
 /**

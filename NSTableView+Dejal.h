@@ -103,7 +103,8 @@
 
 - (void)dejal_addKey:(NSString *)key withValue:(NSString *)value toDictionary:(NSMutableDictionary *)dict;
 - (void)dejal_removeSelectedKeyFromDictionary:(NSMutableDictionary *)dict;
-- (void)dejal_reselectEditWithKey:(NSString *)key forDictionary:(NSMutableDictionary *)dict;
+- (void)dejal_reselectEditWithKey:(NSString *)key forDictionary:(NSDictionary *)dict;
+- (void)dejal_reselectEditWithKey:(NSString *)key forDictionary:(NSDictionary *)dict column:(NSInteger)column;
 
 - (CGFloat)dejal_contentHeight;
 
