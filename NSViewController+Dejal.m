@@ -34,6 +34,17 @@
 @implementation NSViewController (Dejal)
 
 /**
+ Returns the receiver's window controller, as a convenience.  Assumes that the window's delegate is the window controller, as is normally the case.
+ 
+ @author DJS 2015-07.
+ */
+
+- (NSWindowController *)dejal_windowController;
+{
+    return (NSWindowController *)self.view.window.delegate;
+}
+
+/**
  Returns the last child view controller of the receiver, as a convenience (e.g. when there's only one).
  
  @author DJS 2015-01.

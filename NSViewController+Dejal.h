@@ -30,6 +30,7 @@
 
 @interface NSViewController (Dejal)
 
+@property (nonatomic, weak, readonly) NSWindowController *dejal_windowController;
 @property (nonatomic, strong, readonly) NSViewController *dejal_lastChildViewController;
 
 - (void)dejal_transitionSubviewFromViewController:(NSViewController *)fromViewController toViewController:(NSViewController *)toViewController options:(NSViewControllerTransitionOptions)options completionHandler:(void (^)(void))completion;
