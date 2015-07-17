@@ -40,7 +40,6 @@
 - (NSIndexSet *)tableView:(NSTableView *)tableView shouldCutRowIndexes:(NSIndexSet *)indexes;
 - (NSIndexSet *)tableView:(NSTableView *)tableView shouldCopyRowIndexes:(NSIndexSet *)indexes;
 - (NSInteger)tableView:(NSTableView *)tableView shouldPasteBeforeRow:(NSInteger)row;
-- (NSIndexSet *)tableView:(NSTableView *)tableView shouldDeleteRowIndexes:(NSIndexSet *)indexes;
 
 - (NSString *)tableView:(NSTableView *)tableView stringValueForRow:(NSInteger)row;
 
@@ -104,9 +103,9 @@
 - (NSIndexSet *)dejal_selectedOrAllRowIndexes;
 {
     if ([self numberOfRows] == 0 || [self numberOfSelectedRows] > 0)
-        return [self selectedRowIndexes];
+        return self.selectedRowIndexes;
     else
-        return [self dejal_allRowIndexes];
+        return self.dejal_allRowIndexes;
 }
 
 /**
@@ -118,9 +117,9 @@
 - (NSIndexSet *)dejal_multipleSelectedOrAllRowIndexes;
 {
     if ([self numberOfRows] == 0 || [self numberOfSelectedRows] > 1)
-        return [self selectedRowIndexes];
+        return self.selectedRowIndexes;
     else
-        return [self dejal_allRowIndexes];
+        return self.dejal_allRowIndexes;
 }
 
 /**
@@ -148,7 +147,7 @@
 
 - (NSEnumerator *)dejal_selectedRowsEnumerator;
 {
-    NSIndexSet *selectedRows = [self selectedRowIndexes];
+    NSIndexSet *selectedRows = self.selectedRowIndexes;
     NSMutableArray *array = [NSMutableArray arrayWithCapacity:[selectedRows count]];
     NSInteger row;
     
@@ -687,13 +686,6 @@
     return YES;
 }
 
-- (BOOL)dejal_doDeleteIndexes:(NSIndexSet *)indexes
-{
-    //  to be implemented
-    
-    return NO;
-}
-
 - (IBAction)cut:(id)sender
 {
     NSIndexSet *indexes = [self dejal_shouldCutRowIndexes];
@@ -701,12 +693,9 @@
     if (!indexes)
         return;
     
-    // This method is actually fully implemented; but dejal_doDeleteIndexes: is not:
-    NSLog(@"The -cut: method for table views is not implemented yet!");		//  log
-    
     // Only Delete if the Copy was successful:
     if ([self dejal_doCopyIndexes:indexes])
-        [self dejal_doDeleteIndexes:indexes];
+        [self dejal_deleteRowIndexes:indexes];
 }
 
 - (IBAction)copy:(id)sender
@@ -731,17 +720,12 @@
 
 - (IBAction)delete:(id)sender
 {
-    NSIndexSet *indexes = [self dejal_shouldDeleteRowIndexes];
+    NSIndexSet *indexes = self.selectedRowIndexes;
     
-    if (!indexes)
-        return;
-    
-    // This method is actually fully implemented; but dejal_doDeleteIndexes: is not:
-    NSLog(@"The -delete: method for table views is not implemented yet!");		//  log
-    
-    [self dejal_doDeleteIndexes:indexes];
-    
-    [self sendAction:[self action] to:[self target]];
+    if ([self dejal_canDeleteRowIndexes:indexes])
+    {
+        [self dejal_deleteRowIndexes:indexes];
+    }
 }
 
 - (BOOL)dejal_savePlainTextToURL:(NSURL *)url;
@@ -768,7 +752,7 @@
     return NO;
 }
 
-- (BOOL)validateMenuItem:(NSMenuItem *)item
+- (BOOL)validateMenuItem:(NSMenuItem *)item;
 {
     SEL action = [item action];
     
@@ -779,9 +763,25 @@
     else if (action == @selector(paste:))
         return ([self dejal_shouldPasteBeforeRow] >= 0);
     else if (action == @selector(delete:))
-        return ([self dejal_shouldDeleteRowIndexes] != nil);
+        return ([self dejal_canDeleteRowIndexes:self.selectedRowIndexes]);
     else
         return YES;
+}
+
+/**
+ Override of the key press method to detect and handle the Delete key, if appropriate.
+ 
+ @author DJS 2015-07.
+ */
+
+- (void)keyDown:(NSEvent *)theEvent;
+{
+    [super keyDown:theEvent];
+    
+    if (theEvent.keyCode == 51)
+    {
+        [self delete:nil];
+    }
 }
 
 /**
@@ -792,7 +792,7 @@
 
 - (NSIndexSet *)dejal_shouldCutRowIndexes
 {
-    NSIndexSet *indexes = [self selectedRowIndexes];
+    NSIndexSet *indexes = self.selectedRowIndexes;
     
     if ([indexes count] && [[self dejal_delegate] respondsToSelector:@selector(tableView:shouldCutRowIndexes:)])
         return [[self dejal_delegate] tableView:self shouldCutRowIndexes:indexes];
@@ -808,7 +808,7 @@
 
 - (NSIndexSet *)dejal_shouldCopyRowIndexes
 {
-    NSIndexSet *indexes = [self selectedRowIndexes];
+    NSIndexSet *indexes = self.selectedRowIndexes;
     
     if ([indexes count] && [[self dejal_delegate] respondsToSelector:@selector(tableView:shouldCopyRowIndexes:)])
         return [[self dejal_delegate] tableView:self shouldCopyRowIndexes:indexes];
@@ -836,19 +836,22 @@
 }
 
 /**
- If the delegate responds to -tableView:shouldDeleteRowIndexes:, it is invoked with the selected row indexes as a parameter.  The delegate should either return it intact if those rows are deletable, or modify it (by making a mutable copy) to remove some rows, or return nil if Delete should not be allowed.  If there is no selection, nil is returned without asking the delegate.
+ If the delegate responds to -tableView:canDeleteRowIndexes:, it is invoked with the selected row indexes as a parameter.  The delegate should return YES if all of those rows are deletable, or NO if Delete should not be allowed.  If there is no selection, NO is returned without asking the delegate.
  
  @author DJS 2004-12.
+ @version DJS 2015-07: Changed from returning an index set to a boolean, and take indexes.
 */
 
-- (NSIndexSet *)dejal_shouldDeleteRowIndexes
+- (BOOL)dejal_canDeleteRowIndexes:(NSIndexSet *)indexes;
 {
-    NSIndexSet *indexes = [self selectedRowIndexes];
-    
-    if ([indexes count] && [[self dejal_delegate] respondsToSelector:@selector(tableView:shouldDeleteRowIndexes:)])
-        return [[self dejal_delegate] tableView:self shouldDeleteRowIndexes:indexes];
+    if ([indexes count] && [[self dejal_delegate] respondsToSelector:@selector(tableView:canDeleteRowIndexes:)])
+    {
+        return [[self dejal_delegate] tableView:self canDeleteRowIndexes:indexes];
+    }
     else
-        return nil;
+    {
+        return NO;
+    }
 }
 
 /**

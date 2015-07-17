@@ -36,9 +36,9 @@
 - (NSIndexSet *)tableView:(NSTableView *)tableView shouldCutRowIndexes:(NSIndexSet *)indexes;
 - (NSIndexSet *)tableView:(NSTableView *)tableView shouldCopyRowIndexes:(NSIndexSet *)indexes;
 - (NSInteger)tableView:(NSTableView *)tableView shouldPasteBeforeRow:(NSInteger)row;
-- (NSIndexSet *)tableView:(NSTableView *)tableView shouldDeleteRowIndexes:(NSIndexSet *)indexes;
 - (NSIndexSet *)tableView:(NSTableView *)tableView shouldSaveRowIndexes:(NSIndexSet *)indexes;
 
+- (BOOL)tableView:(NSTableView *)tableView canDeleteRowIndexes:(NSIndexSet *)indexes;
 - (BOOL)tableView:(NSTableView *)tableView deleteRowIndexes:(NSIndexSet *)indexes;
 
 - (NSString *)tableView:(NSTableView *)tableView stringValueForRow:(NSInteger)row;
@@ -131,11 +131,11 @@
 - (NSIndexSet *)dejal_shouldCutRowIndexes;
 - (NSIndexSet *)dejal_shouldCopyRowIndexes;
 - (NSInteger)dejal_shouldPasteBeforeRow;
-- (NSIndexSet *)dejal_shouldDeleteRowIndexes;
 - (NSIndexSet *)dejal_shouldSaveRowIndexes;
 
 - (NSString *)dejal_stringValueForRow:(NSUInteger)row;
 
+- (BOOL)dejal_canDeleteRowIndexes:(NSIndexSet *)indexes;
 - (BOOL)dejal_deleteRowIndexes:(NSIndexSet *)indexes;
 
 @end
