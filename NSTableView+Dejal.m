@@ -592,6 +592,7 @@
  
  @author DJS 2014-12.
  @version DJS 2015-06: Changed to wait a moment, to avoid conflicting with a tab event, and add a column parameter.
+ @version DJS 2015-08: Changed to check for an invalid row.
  */
 
 - (void)dejal_reselectEditWithKey:(NSString *)key forDictionary:(NSDictionary *)dict column:(NSInteger)column;
@@ -605,20 +606,23 @@
                        NSInteger row = [[dict dejal_sortedKeys] indexOfObject:key];
                        NSInteger editColumn = self.editedColumn + 1;
                        
-                       if (column >= 0)
+                       if (row != NSNotFound)
                        {
-                           editColumn = column + 1;
-                       }
-                       else if (editColumn < 0)
-                       {
-                           editColumn = [self dejal_indexOfFirstEditableTableColumn];
-                       }
-                       
-                       [self dejal_selectRowIndex:row byExtendingSelection:NO];
-                       
-                       if (editColumn >= 0)
-                       {
-                           [self editColumn:editColumn row:row withEvent:nil select:YES];
+                           if (column >= 0)
+                           {
+                               editColumn = column + 1;
+                           }
+                           else if (editColumn < 0)
+                           {
+                               editColumn = [self dejal_indexOfFirstEditableTableColumn];
+                           }
+                           
+                           [self dejal_selectRowIndex:row byExtendingSelection:NO];
+                           
+                           if (editColumn >= 0)
+                           {
+                               [self editColumn:editColumn row:row withEvent:nil select:YES];
+                           }
                        }
                    });
 }
