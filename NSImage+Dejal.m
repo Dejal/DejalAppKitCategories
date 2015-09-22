@@ -98,6 +98,7 @@
  Returns a PNG representation of the receiver.
  
  @author DJS 2014-10.
+ @version DJS 2015-09: Changed to use an empty dictionary instead of nil, to avoid a nullability warning.
  */
 
 - (NSData *)dejal_PNGRepresentation;
@@ -107,7 +108,7 @@
     
     newRep.size = self.size;
     
-    return [newRep representationUsingType:NSPNGFileType properties:nil];
+    return [newRep representationUsingType:NSPNGFileType properties:@{}];
 }
 
 @end

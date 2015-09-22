@@ -220,26 +220,28 @@
  Returns a RTF edition of the text.
  
  @author DJS 2004-05.
+ @version DJS 2015-09: Changed to use an empty dictionary instead of nil, to avoid a nullability warning.
 */
 
 - (NSData *)dejal_RTFValue
 {
     NSAttributedString *text = [self dejal_attributedStringValue];
     
-    return [text RTFFromRange:NSMakeRange(0, [text length]) documentAttributes:nil];
+    return [text RTFFromRange:NSMakeRange(0, [text length]) documentAttributes:@{}];
 }
 
 /**
  Returns a RTFD edition of the text.
  
  @author DJS 2004-05.
+ @version DJS 2015-09: Changed to use an empty dictionary instead of nil, to avoid a nullability warning.
 */
 
 - (NSData *)dejal_RTFDValue
 {
     NSAttributedString *text = [self dejal_attributedStringValue];
     
-    return [text RTFDFromRange:NSMakeRange(0, [text length]) documentAttributes:nil];
+    return [text RTFDFromRange:NSMakeRange(0, [text length]) documentAttributes:@{}];
 }
 
 

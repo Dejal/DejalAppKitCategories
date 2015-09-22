@@ -776,15 +776,18 @@
  Override of the key press method to detect and handle the Delete key, if appropriate.
  
  @author DJS 2015-07.
+ @version DJS 2015-09: Changed to avoid calling super for the Delete key (since it causes a beep).
  */
 
 - (void)keyDown:(NSEvent *)theEvent;
 {
-    [super keyDown:theEvent];
-    
     if (theEvent.keyCode == 51)
     {
         [self delete:nil];
+    }
+    else
+    {
+        [super keyDown:theEvent];
     }
 }
 
