@@ -30,8 +30,33 @@
 
 @interface NSViewController (Dejal)
 
+/**
+ Returns the receiver's window controller, as a convenience.  Assumes that the window's delegate is the window controller, as is normally the case.
+ 
+ @author DJS 2015-07.
+ */
+
 @property (nonatomic, weak, readonly) NSWindowController *dejal_windowController;
+
+/**
+ Returns the last child view controller of the receiver, as a convenience (e.g. when there's only one).
+ 
+ @author DJS 2015-01.
+ */
+
 @property (nonatomic, strong, readonly) NSViewController *dejal_lastChildViewController;
+
+/**
+ Performs a transition between two sibling child view controllers of the view controller.  The same as the
+ -transitionFromViewController:toViewController:options:completionHandler: method, except this variation supports either of the views being nil, and automatically adds and removes the view controllers as needed, in addition to their views.
+ 
+ @param fromViewController A child view controller whose view is visible in the view controller’s view hierarchy, or nil if there isn't one yet.
+ @param toViewController A child view controller whose view is not in the view controller’s view hierarchy, or nil to remove fromViewController.
+ @param options A bitmask of options that specify how you want to perform the transition animation. For the options, see the NSViewControllerTransitionOptions enumeration.
+ @param completion A block called immediately after the transition animation completes; may be nil.
+ 
+ @author DJS 2015-01.
+ */
 
 - (void)dejal_transitionSubviewFromViewController:(NSViewController *)fromViewController toViewController:(NSViewController *)toViewController options:(NSViewControllerTransitionOptions)options completionHandler:(void (^)(void))completion;
 
