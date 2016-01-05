@@ -555,6 +555,7 @@
  If the data source for the receiver is a dictionary, displayed via "Key" and "Value" columns, this method will remove the key of the selected row from that dictionary, usually called from the "-" button's action method.  Only supports deleting a single row, so multiple selection shouldn't be enabled.  Note that this could and should be done instead with bindings.  Remove this method once existing uses have been upgraded.
  
  @author DJS 2006-10.
+ @version DJS 2015-12: Changed to avoid a crash if called with no selected row.
 */
 
 - (void)dejal_removeSelectedKeyFromDictionary:(NSMutableDictionary *)dict;
@@ -562,10 +563,18 @@
     [[self window] dejal_forceEndEditingForView:self];
     
     NSInteger row = [self selectedRow];
+    
+    if (row == -1)
+    {
+        return;
+    }
+    
     NSString *key = [dict dejal_sortedKeys][row];
     
     if (!dict)
+    {
         return;
+    }
     
     [dict removeObjectForKey:key];
     
