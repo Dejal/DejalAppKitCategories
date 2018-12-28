@@ -3,7 +3,7 @@
 //  Dejal Open Source Categories
 //
 //  Created by David Sinclair on Fri Dec 10 2004.
-//  Copyright (c) 2004-2015 Dejal Systems, LLC. All rights reserved.
+//  Copyright (c) 2004-2018 Dejal Systems, LLC. All rights reserved.
 //
 //  Redistribution and use in source and binary forms, with or without modification,
 //  are permitted provided that the following conditions are met:
@@ -32,6 +32,23 @@
 
 
 @implementation NSView (DejalSubviews)
+
+/**
+ Returns whether or not the current appearance is dark mode.  A similar class method is also provided in the NSColor+Dejal category, for when a view isn't available.
+ 
+ @returns YES if dark, otherwise NO.
+ 
+ @author DJS 2018-09.
+ */
+
+- (BOOL)dejal_isDark;
+{
+    if (@available(macOS 10.14, *)) {
+        return [self.effectiveAppearance bestMatchFromAppearancesWithNames:@[NSAppearanceNameAqua, NSAppearanceNameDarkAqua]] == NSAppearanceNameDarkAqua;
+    }
+    
+    return false;
+}
 
 /**
  Adds the specified view as a subview of the reciever, and sets its Auto Layout constraints to keep it the full size of the receiver.
