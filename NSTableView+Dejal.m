@@ -299,7 +299,7 @@
 
 - (NSTableColumn *)dejal_addTableColumnWithIdentifier:(NSString *)identifier title:(NSString *)title editable:(BOOL)editable resizable:(BOOL)resizable width:(CGFloat)width
 {
-    return [self dejal_addTableColumnWithIdentifier:identifier title:title editable:editable resizable:resizable sortable:NO ascending:YES width:width alignment:NSNaturalTextAlignment];
+    return [self dejal_addTableColumnWithIdentifier:identifier title:title editable:editable resizable:resizable sortable:NO ascending:YES width:width alignment:NSTextAlignmentNatural];
 }
 
 /**

@@ -69,14 +69,14 @@
     [self lockFocus];
     
     [[NSGraphicsContext currentContext] setImageInterpolation:NSImageInterpolationHigh];
-    [newBadge drawAtPoint:NSMakePoint(self.size.width - newBadge.size.width, 0) fromRect:NSZeroRect operation:NSCompositeSourceOver fraction:alpha];
+    [newBadge drawAtPoint:NSMakePoint(self.size.width - newBadge.size.width, 0) fromRect:NSZeroRect operation:NSCompositingOperationSourceOver fraction:alpha];
     
     [self unlockFocus];
 }
 
 - (NSImage *)dejal_tintedImageWithColor:(NSColor *)tint;
 {
-    return [self dejal_tintedImageWithColor:tint operation:NSCompositeSourceAtop];
+    return [self dejal_tintedImageWithColor:tint operation:NSCompositingOperationSourceAtop];
 }
 
 - (NSImage *)dejal_tintedImageWithColor:(NSColor *)tint operation:(NSCompositingOperation)operation;
@@ -86,7 +86,7 @@
     NSImage *image = [[NSImage alloc] initWithSize:size];
     
     [image lockFocus];
-    [self drawAtPoint:NSZeroPoint fromRect:bounds operation:NSCompositeSourceOver fraction:1.0];
+    [self drawAtPoint:NSZeroPoint fromRect:bounds operation:NSCompositingOperationSourceOver fraction:1.0];
     [tint set];
     NSRectFillUsingOperation(bounds, operation);
     [image unlockFocus];
