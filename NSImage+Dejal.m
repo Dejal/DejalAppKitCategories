@@ -36,7 +36,7 @@
 {
     CGContextRef context;
 
-    context = [[NSGraphicsContext currentContext] graphicsPort];
+    context = [[NSGraphicsContext currentContext] CGContext];
     CGContextSaveGState(context);
 
     {
@@ -108,7 +108,7 @@
     
     newRep.size = self.size;
     
-    return [newRep representationUsingType:NSPNGFileType properties:@{}];
+    return [newRep representationUsingType:NSBitmapImageFileTypePNG properties:@{}];
 }
 
 @end
