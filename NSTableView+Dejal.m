@@ -691,10 +691,10 @@
     NSString *plainString = [self dejal_stringForIndexes:indexes];
     
     // Declare types:
-    [pboard declareTypes:@[NSStringPboardType] owner:self];
+    [pboard declareTypes:@[NSPasteboardTypeString] owner:self];
     
     // Copy values to pasteboard:
-    [pboard setString:plainString forType:NSStringPboardType];
+    [pboard setString:plainString forType:NSPasteboardTypeString];
     
     return YES;
 }
