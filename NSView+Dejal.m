@@ -43,11 +43,7 @@
 
 - (BOOL)dejal_isDark;
 {
-    if (@available(macOS 10.14, *)) {
-        return [self.effectiveAppearance bestMatchFromAppearancesWithNames:@[NSAppearanceNameAqua, NSAppearanceNameDarkAqua]] == NSAppearanceNameDarkAqua;
-    }
-    
-    return false;
+    return [self.effectiveAppearance bestMatchFromAppearancesWithNames:@[NSAppearanceNameAqua, NSAppearanceNameDarkAqua]] == NSAppearanceNameDarkAqua;
 }
 
 /**
